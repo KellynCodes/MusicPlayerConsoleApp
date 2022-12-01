@@ -136,6 +136,10 @@
                     case "YES":
                         Console.Clear();
                         goto Start;
+                    case "PREV": PlayPrevSong(songToPlay);
+                        break;
+                    case "NEXT": PlayNextSong(songToPlay);
+                        break;
                     case "NO":
                         Console.Clear();
                         Program.Main();
