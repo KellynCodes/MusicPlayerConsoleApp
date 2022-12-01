@@ -18,4 +18,21 @@
         }
 
     }
+
+    public class PlayListModel
+    {
+        public int PlayId { get; set; }
+        public string Name { get; set; }
+        public List<SongModel> SongsInPlayList { get; set; }
+        public string createAt { get; set; }
+
+        public PlayListModel(int playId, string name, List<SongModel> songmodel, string createat)
+        {
+            PlayId = playId;
+            Name = name;
+            SongsInPlayList = songmodel;
+            createAt = createat;
+        }
+     
+    }
 }

@@ -7,15 +7,15 @@
         private static int LoopSleepDuration { get; set; } = 500;
         private static int Minutes { get; set;} = 60;
 
-        private static string CreatedTDate { get; set; } = $"{DateTime.Now.ToLongDateString()} by {DateTime.Now.ToLongTimeString()}";
+        public static string CreatedDate { get; set; } = $"{DateTime.Now.ToLongDateString()} by {DateTime.Now.ToLongTimeString()}";
 
         public static List<SongModel> Songs { get; set; } = new List<SongModel>()
             {
-                new SongModel(1, "Kelly Presh", "Purity", 0.5, CreatedTDate),
-                new SongModel(2, "Kizz Daniel", "Buga", 1, CreatedTDate),
-                new SongModel(3, "Kizz Daniel", "Cough", 0.1, CreatedTDate),
-                new SongModel(4, "Tekno", "Go", 2, CreatedTDate),
-                new SongModel(5, "Jusin Bieber", "Love You Forever", 1.5, CreatedTDate)
+                new SongModel(1, "Kelly Presh", "Purity", 0.5, CreatedDate),
+                new SongModel(2, "Kizz Daniel", "Buga", 1, CreatedDate),
+                new SongModel(3, "Kizz Daniel", "Cough", 0.1, CreatedDate),
+                new SongModel(4, "Tekno", "Go", 2, CreatedDate),
+                new SongModel(5, "Jusin Bieber", "Love You Forever", 1.5, CreatedDate)
             };
 
         public static void ErrorMessage()
@@ -59,7 +59,7 @@
             if (double.TryParse(Console.ReadLine(), out double songDuration))
             {
                 int NewSongId = Songs.Last().SongId + 1;
-                Songs.Add(new SongModel(NewSongId, ArtistName, songName, songDuration, CreatedTDate));
+                Songs.Add(new SongModel(NewSongId, ArtistName, songName, songDuration, CreatedDate));
                 Console.WriteLine("Song successfully added to list");
                 ViewListOfSongs();
             }

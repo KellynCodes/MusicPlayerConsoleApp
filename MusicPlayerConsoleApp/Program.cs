@@ -26,6 +26,8 @@ internal class Program
                     break;
                 case (int)Choice.choiceTwo: UserOperations.RemoveSong();
                     break;
+                case (int)Choice.choiceThree: UserOperations.ShowPlayList();
+                    break;
                 case (int)Choice.choiceFour: UserOperations.PlaySong();
                     break;
                     Console.Clear();

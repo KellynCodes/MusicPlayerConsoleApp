@@ -2,10 +2,45 @@
 {
     internal class PlayChoice
     {
-
+        private enum User : int
+        {
+            IdOne = 1,
+            IdTwo = 2,
+            IdThree = 3,
+            IdFour = 4,
+            IdFive = 5,
+        }
+        public static List<SongModel> GetSongModels { get; set; }
+       public static List<PlayListModel> PlayList { get; set; } = new List<PlayListModel>()
+        {
+            new PlayListModel((int)User.IdOne, "Flavour Songs", UserOperations.Songs, UserOperations.CreatedDate),
+            new PlayListModel((int)User.IdTwo, "Phyno Songs", UserOperations.Songs, UserOperations.CreatedDate),
+            new PlayListModel((int)User.IdThree, "Timaya Songs", UserOperations.Songs, UserOperations.CreatedDate),
+            new PlayListModel((int)User.IdFour, "Kizz Daniel Songs", UserOperations.Songs, UserOperations.CreatedDate),
+            new PlayListModel((int)User.IdFive, "KellynCodes Songs", UserOperations.Songs, UserOperations.CreatedDate),
+        };
     }
     public partial class UserOperations
     {
+        /*=========================PLAYLIST CODES=========================*/
+        public static void ShowPlayList()
+        {
+            var list = PlayChoice.PlayList;
+            foreach(var playList in list)
+            {
+                Console.WriteLine($"{playList.PlayId}\t {playList.Name}\t {playList.createAt}");
+                foreach(var subList in playList.SongsInPlayList)
+                {
+                    Console.WriteLine($"{subList.SongName} by {subList.Artist}");
+                }
+            }
+        }
+
+
+
+        /*=========================END OF PLAYLIST CODES=========================*/
+                                            /*|*/
+        /*=========================SONG CODES=========================*/
         public static void PlayNextSong(int songId)
         {
             var nextSong = Songs.FirstOrDefault(song => song.SongId == songId + 1);
