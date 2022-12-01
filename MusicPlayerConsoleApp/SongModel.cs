@@ -6,12 +6,14 @@
         public string? Artist { get; set; }
         public string? SongName { get; set; }
         public string SongDate { get; set; }
+        public double ? SongDuration { get; set; }
 
-        public SongModel(int id, string artist, string songname, string songdate)
+        public SongModel(int id, string artist, string songname, double songDuration, string songdate)
         {
             SongId = id;
-            Artist = artist;
+            Artist = artist; 
             SongName = songname;
+            SongDuration = songDuration;
             SongDate = songdate;
         }
 

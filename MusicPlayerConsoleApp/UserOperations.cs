@@ -1,24 +1,23 @@
-﻿using ConsoleTable;
-namespace MusicPlayerConsoleApp
+﻿namespace MusicPlayerConsoleApp
 {
-    internal class UserOperations
+    public partial class UserOperations
     {
 
 
         private static string CreatedTDate { get; set; } = $"{DateTime.Now.ToLongDateString()} by {DateTime.Now.ToLongTimeString()}";
-     
-       public static List<SongModel> Songs { get; set; } = new List<SongModel>()
+
+        public static List<SongModel> Songs { get; set; } = new List<SongModel>()
             {
-                new SongModel(1, "Kelly Presh", "Purity", CreatedTDate),
-                new SongModel(2, "Kizz Daniel", "Buga", CreatedTDate),
-                new SongModel(3, "Kizz Daniel", "Cough", CreatedTDate),
-                new SongModel(4, "Tekno", "Go", CreatedTDate),
-                new SongModel(5, "Jusin Bieber", "Love Your Forever", CreatedTDate)
+                new SongModel(1, "Kelly Presh", "Purity", 0.5, CreatedTDate),
+                new SongModel(2, "Kizz Daniel", "Buga", 1, CreatedTDate),
+                new SongModel(3, "Kizz Daniel", "Cough", 0.1, CreatedTDate),
+                new SongModel(4, "Tekno", "Go", 2, CreatedTDate),
+                new SongModel(5, "Jusin Bieber", "Love You Forever", 1.5, CreatedTDate)
             };
 
         public static void ErrorMessage()
         {
-                Console.WriteLine("Input was empty or not valid");
+            Console.WriteLine("Input was empty or not valid");
 
         }
 
@@ -26,11 +25,11 @@ namespace MusicPlayerConsoleApp
         public static void ViewListOfSongs()
         {
 
-            Console.WriteLine("Available Song lists");
+            Console.WriteLine("Available Song lists\n");
             /* var table = new ConsoleTable("No.", "Artist", "Song", "Added Date");*/
             foreach (SongModel song in Songs)
             {
-                Console.WriteLine($"{song.SongId}\t {song.Artist}\t {song.SongName}\t {song.SongDate}");
+                Console.WriteLine($"{song.SongId}\t {song.Artist}\t {song.SongName}\t {song.SongDate}  {song.SongDuration}");
             }
         }
 
@@ -41,6 +40,7 @@ namespace MusicPlayerConsoleApp
             //validate input
             if (string.IsNullOrWhiteSpace(songName))
             {
+                Console.Clear();
                 ErrorMessage();
                 goto Start;
             }
@@ -48,40 +48,113 @@ namespace MusicPlayerConsoleApp
             string? ArtistName = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(ArtistName))
             {
+                Console.Clear();
                 ErrorMessage();
                 goto Artist;
             }
-            int NewSongId = Songs.Last().SongId + 1;
-            Songs.Add(new SongModel(NewSongId, ArtistName, songName, CreatedTDate));
-            Console.WriteLine("Song successfully added to list");
-            ViewListOfSongs();
+        SongDuation: Console.WriteLine("Enter song Duration");
+            if (double.TryParse(Console.ReadLine(), out double songDuration))
+            {
+                int NewSongId = Songs.Last().SongId + 1;
+                Songs.Add(new SongModel(NewSongId, ArtistName, songName, songDuration, CreatedTDate));
+                Console.WriteLine("Song successfully added to list");
+                ViewListOfSongs();
+            }
+            else
+            {
+                Console.Clear();
+                ErrorMessage();
+                goto SongDuation;
+            }
         }
 
         public static void RemoveSong()
         {
-            Console.WriteLine("Enter the number of songs you want to remove");
+        Start: Console.WriteLine("Enter the number of songs you want to remove");
             if (int.TryParse(Console.ReadLine(), out int songId))
             {
-                var songView = Songs.FirstOrDefault(song => song.SongId == songId);
-                Console.WriteLine($"Are you sure you want to delete {songView.SongName} by {songView.Artist}");
+                var findAndMatchSongById = Songs.FirstOrDefault(song => song.SongId == songId);
+                Console.WriteLine($"Are you sure you want to delete {findAndMatchSongById.SongName} by {findAndMatchSongById.Artist}");
                 string userAnswer = Console.ReadLine() ?? string.Empty;
                 if (userAnswer.ToUpper() == "YES")
                 {
-                    Songs.Remove(songView);
-                }else if(userAnswer.ToUpper() == "NO")
+                    Songs.Remove(findAndMatchSongById);
+                    Console.WriteLine($"Your have successfully removed {findAndMatchSongById}");
+                }
+                else if (userAnswer.ToUpper() == "NO")
                 {
                     Console.Clear();
-                    Console.WriteLine($"{songView.SongName} was not deleted");
+                    Console.WriteLine($"{findAndMatchSongById.SongName} was not deleted");
                     Program.Main();
                 }
                 else
                 {
-                    Console.WriteLine("Sorry we could'nt delete the song. ");
+                    Console.Clear();
+                    Console.WriteLine("You have cancled this Operation");
+                    Program.Main();
                 }
             }
-          }
+            else
+            {
+                Console.Clear();
+                ErrorMessage();
+                goto Start; ;
+            }
         }
+
+        /* ==================PlaySong===========================*/
+        public static void PlaySong()
+        {
+            const int songFrequency = 1000;
+            const int songDuration = 200;
+            const int loopSleepDuration = 500;
+            const int Minutes = 60;
+        Start: ViewListOfSongs();
+            Console.WriteLine("Enter song number you want to play");
+            if (int.TryParse(Console.ReadLine(), out int songToPlay))
+            {
+                var song = Songs.FirstOrDefault(song => song.SongId == songToPlay);
+                if (song == null)
+                {
+                    Console.Clear();
+                    Console.WriteLine("The number your entered where not in the list");
+                    goto Start;
+                }
+                Console.Clear();
+                Console.WriteLine($"Playing {song.SongName} by {song.Artist}");
+                Console.Write($"Song Duration => {song.SongDuration} Minutes\n ");
+                for (int i = 0; i < song.SongDuration * Minutes; i++)
+                {
+                    Console.Write(".|");
+                    Thread.Sleep(loopSleepDuration);
+                    Console.Beep(songFrequency, songDuration);
+                }
+            playAnotherSong: Console.WriteLine("\nDo you wish to play another song [YES/NO]\n OR \n Enter [PREV/NEXT] to play the Previous/Next song");
+                string answer = Console.ReadLine() ?? string.Empty;
+                switch (answer.ToUpper())
+                {
+                    case "YES":
+                        Console.Clear();
+                        goto Start;
+                    case "NO":
+                        Console.Clear();
+                        Program.Main();
+                        break;
+                    default:
+                        Console.Clear();
+                        ErrorMessage();
+                        goto playAnotherSong;
+                }
+            }
+            else
+            {
+                Console.Clear();
+                ErrorMessage();
+                goto Start;
+            }
+        }
+    }
 }
 
 
-           
+

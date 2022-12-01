@@ -24,20 +24,26 @@ internal class Program
             {
                 case (int)Choice.choiceOne: UserOperations.AddSong();
                     break;
-                case (int)Choice.choiceFive: UserOperations.RemoveSong();
+                case (int)Choice.choiceTwo: UserOperations.RemoveSong();
                     break;
+                case (int)Choice.choiceFour: UserOperations.PlaySong();
+                    break;
+                    Console.Clear();
+                    default: Console.WriteLine("Invalid input. Enter only number in the Options");
+                    goto EnterChoice;
             }
         }
         else
         {
+            Console.Clear();
             UserOperations.ErrorMessage();
             goto EnterChoice;
         }
 
-      
+
         //Do you want user to continue;
         /*===========================================*/
-        Console.WriteLine("Do you wish to see list");
+        question: Console.WriteLine("\nDo you wish to see list");
         string input = Console.ReadLine() ?? string.Empty;
         if (input.ToUpper() == "YES")
         {
@@ -50,7 +56,9 @@ internal class Program
         }
         else
         {
+            Console.Clear();
             Console.WriteLine("Please choose NO/YES for us to be certain you want to close the application");
+            goto question;
         }
     }
     //Choice message
@@ -58,10 +66,10 @@ internal class Program
     {
         Console.WriteLine("What will you like to do\n");
         Console.WriteLine("1.\t Add new song");
-        Console.WriteLine("2.\t Create Playlist");
-        Console.WriteLine("3.\t Play Song");
-        Console.WriteLine("4.\t Edit Song");
-        Console.WriteLine("5.\t Delete Song");
+        Console.WriteLine("2.\t Delete Song");
+        Console.WriteLine("3.\t Create Playlist");
+        Console.WriteLine("4.\t Play Song");
+        Console.WriteLine("5.\t Edit Song");
     }
 
 }
