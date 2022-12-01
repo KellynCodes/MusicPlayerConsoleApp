@@ -2,7 +2,10 @@
 {
     public partial class UserOperations
     {
-
+        private static int SongFrequency { get; set; } = 1000;
+        private static int SongDuration { get; set; } = 200;
+        private static int LoopSleepDuration { get; set; } = 500;
+        private static int Minutes { get; set;} = 60;
 
         private static string CreatedTDate { get; set; } = $"{DateTime.Now.ToLongDateString()} by {DateTime.Now.ToLongTimeString()}";
 
@@ -105,10 +108,6 @@
         /* ==================PlaySong===========================*/
         public static void PlaySong()
         {
-            const int songFrequency = 1000;
-            const int songDuration = 200;
-            const int loopSleepDuration = 500;
-            const int Minutes = 60;
         Start: ViewListOfSongs();
             Console.WriteLine("Enter song number you want to play");
             if (int.TryParse(Console.ReadLine(), out int songToPlay))
@@ -123,11 +122,11 @@
                 Console.Clear();
                 Console.WriteLine($"Playing {song.SongName} by {song.Artist}");
                 Console.Write($"Song Duration => {song.SongDuration} Minutes\n ");
-                for (int i = 0; i < song.SongDuration * Minutes; i++)
+             for (int i = 0; i < song.SongDuration * Minutes; i++)
                 {
-                    Console.Write(".|");
-                    Thread.Sleep(loopSleepDuration);
-                    Console.Beep(songFrequency, songDuration);
+                    Console.Write("|.|");
+                    Thread.Sleep(LoopSleepDuration);
+                    Console.Beep(SongFrequency, SongDuration);
                 }
             playAnotherSong: Console.WriteLine("\nDo you wish to play another song [YES/NO]\n OR \n Enter [PREV/NEXT] to play the Previous/Next song");
                 string answer = Console.ReadLine() ?? string.Empty;
