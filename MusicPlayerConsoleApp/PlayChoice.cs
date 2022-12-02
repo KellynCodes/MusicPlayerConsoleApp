@@ -26,17 +26,67 @@
         public static void ShowPlayList()
         {
             var list = PlayChoice.PlayList;
-            foreach(var playList in list)
+            foreach (var playList in list)
             {
-                Console.WriteLine($"{playList.PlayId}\t {playList.Name}\t {playList.createAt}");
-                foreach(var subList in playList.SongsInPlayList)
-                {
-                    Console.WriteLine($"{subList.SongName} by {subList.Artist}");
-                }
+                Console.WriteLine($"{playList.PlayId}\t {playList.Name}\t {playList.CreateAt}");
+               
             }
         }
 
+        public static void ShowPlayListById()
+        {
+            ShowPlayList();
+            Console.WriteLine("Enter Playlist Id in the list");
+            string ListID = Console.ReadLine() ?? string.Empty;
+            if (int.TryParse(ListID, out int PlayListID))
+            {
+                var List = PlayChoice.PlayList;
+            var unicPlayList = List.FirstOrDefault(matchedList => matchedList.PlayId == PlayListID);
+            foreach (var playList in List)
+            {
+                if(unicPlayList == null)
+                {
+                    ErrorMessage();
+                    Program.Main();
+                }
+                if(unicPlayList.PlayId == PlayListID)
+                {
+                Console.WriteLine($"{unicPlayList.PlayId}\t {unicPlayList.Name}\t {unicPlayList.CreateAt}");
 
+                }
+               /* foreach(var subList in playList.SongsInPlayList)
+                {
+                    Console.WriteLine($"{subList.SongName} by {subList.Artist}");
+                }*/
+            }
+            }
+            else
+            {
+                UserOperations.ErrorMessage();
+            }
+        }
+
+        public static void CreatePlayList()
+        {
+            var list = PlayChoice.PlayList;
+
+        Start: Console.WriteLine("Enter Playlist name");
+            string PlayListName = Console.ReadLine() ?? string.Empty;
+            if (string.IsNullOrEmpty(PlayListName))
+            {
+                ErrorMessage();
+                goto Start;
+            }
+            var playListId = list.Last().PlayId + 1;
+            list.Add(new PlayListModel (playListId, PlayListName, Songs, CreatedDate));
+            var newPlayList = list.FirstOrDefault(newSong => newSong.PlayId == playListId);
+            Console.WriteLine($"{newPlayList.Name} was added to the list");
+        }
+
+        //Add song to PlayList
+        private static void AddSongToPlayList()
+        {
+        }
 
         /*=========================END OF PLAYLIST CODES=========================*/
                                             /*|*/

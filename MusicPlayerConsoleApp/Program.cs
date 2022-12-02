@@ -20,15 +20,18 @@ internal class Program
         string userChoice = Console.ReadLine() ?? string.Empty;
         if(int.TryParse(userChoice, out int choice))
         {
+          
             switch (choice)
             {
                 case (int)Choice.choiceOne: UserOperations.AddSong();
                     break;
                 case (int)Choice.choiceTwo: UserOperations.RemoveSong();
                     break;
-                case (int)Choice.choiceThree: UserOperations.ShowPlayList();
+                case (int)Choice.choiceThree: UserOperations.CreatePlayList();
                     break;
                 case (int)Choice.choiceFour: UserOperations.PlaySong();
+                    break;
+                case (int)Choice.choiceFive: UserOperations.ShowPlayListById();
                     break;
                     Console.Clear();
                     default: Console.WriteLine("Invalid input. Enter only number in the Options");
