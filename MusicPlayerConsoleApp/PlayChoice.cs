@@ -10,16 +10,16 @@
             IdFour = 4,
             IdFive = 5,
         }
-        public static List<SongModel> GetSongModels { get; set; }
        public static List<PlayListModel> PlayList { get; set; } = new List<PlayListModel>()
         {
-            new PlayListModel((int)User.IdOne, "Flavour Songs", UserOperations.Songs, UserOperations.CreatedDate),
-            new PlayListModel((int)User.IdTwo, "Phyno Songs", UserOperations.Songs, UserOperations.CreatedDate),
-            new PlayListModel((int)User.IdThree, "Timaya Songs", UserOperations.Songs, UserOperations.CreatedDate),
-            new PlayListModel((int)User.IdFour, "Kizz Daniel Songs", UserOperations.Songs, UserOperations.CreatedDate),
-            new PlayListModel((int)User.IdFive, "KellynCodes Songs", UserOperations.Songs, UserOperations.CreatedDate),
+            new PlayListModel((int)User.IdOne, "Flavour Songs", PlayListModel.PlayListSongs, UserOperations.CreatedDate),
+            new PlayListModel((int)User.IdTwo, "Phyno Songs", PlayListModel.PlayListSongs, UserOperations.CreatedDate),
+            new PlayListModel((int)User.IdThree, "Timaya Songs", PlayListModel.PlayListSongs, UserOperations.CreatedDate),
+            new PlayListModel((int)User.IdFour, "Kizz Daniel Songs", PlayListModel.PlayListSongs, UserOperations.CreatedDate),
+            new PlayListModel((int)User.IdFive, "KellynCodes Songs", PlayListModel.PlayListSongs, UserOperations.CreatedDate),
         };
     }
+
     public partial class UserOperations
     {
         /*=========================PLAYLIST CODES=========================*/
@@ -41,24 +41,24 @@
             if (int.TryParse(ListID, out int PlayListID))
             {
                 var List = PlayChoice.PlayList;
-            var unicPlayList = List.FirstOrDefault(matchedList => matchedList.PlayId == PlayListID);
-            foreach (var playList in List)
+            foreach (var songs in List)
             {
-                if(unicPlayList == null)
-                {
-                    ErrorMessage();
-                    Program.Main();
-                }
-                if(unicPlayList.PlayId == PlayListID)
-                {
-                Console.WriteLine($"{unicPlayList.PlayId}\t {unicPlayList.Name}\t {unicPlayList.CreateAt}");
 
+                    foreach (var unicPlayList in PlayListModel.PlayListSongs)
+                    {
+                        if (unicPlayList == null)
+                        {
+                            ErrorMessage();
+                            Program.Main();
+                        }
+                        if (unicPlayList. == PlayListID)
+                        {
+                            Console.WriteLine($"{unicPlayList.PlayId}\t {unicPlayList.Name}\t {unicPlayList.CreateAt}");
+
+                        }
+                        Console.WriteLine($"{unicPlayList.SongName} by {unicPlayList.Artist}");
+                    }
                 }
-               /* foreach(var subList in playList.SongsInPlayList)
-                {
-                    Console.WriteLine($"{subList.SongName} by {subList.Artist}");
-                }*/
-            }
             }
             else
             {
