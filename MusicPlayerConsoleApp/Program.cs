@@ -1,7 +1,9 @@
 ﻿using MusicPlayerConsoleApp;
+using System.Text;
 
 internal class Program
 {
+    public static StringBuilder ChooseOption = new();
     public enum Choice
 {
     choiceOne = 1,
@@ -9,6 +11,7 @@ internal class Program
     choiceThree,
     choiceFour,
     choiceFive,
+    choiceSix,
 }
 
     public static void Main()
@@ -16,22 +19,24 @@ internal class Program
         UserOperations.ViewListOfSongs();
 
         //user operations
-        EnterChoice: ChooseChoice();
+        ChooseOption.AppendLine("What will you like to do\n 1.\t Add new song\n 2.\t Delete Song\n 3.\t Edit Song\n 4.\t Create Playlist\n 5.\t Play Song\n 6.\t Add Song to playlist");
+    EnterChoice: Console.WriteLine(ChooseOption.ToString());
         string userChoice = Console.ReadLine() ?? string.Empty;
         if(int.TryParse(userChoice, out int choice))
         {
-          
             switch (choice)
             {
                 case (int)Choice.choiceOne: UserOperations.AddSong();
                     break;
                 case (int)Choice.choiceTwo: UserOperations.RemoveSong();
+                    break; 
+                case (int)Choice.choiceThree: UserOperations.ShowPlayListById();
                     break;
-                case (int)Choice.choiceThree: UserOperations.CreatePlayList();
+                case (int)Choice.choiceFour: UserOperations.CreatePlayList();
                     break;
-                case (int)Choice.choiceFour: UserOperations.PlaySong();
+                case (int)Choice.choiceFive: UserOperations.PlaySong();
                     break;
-                case (int)Choice.choiceFive: UserOperations.ShowPlayListById();
+                case (int)Choice.choiceSix: UserOperations.AddSongToPlayList();
                     break;
                     Console.Clear();
                     default: Console.WriteLine("Invalid input. Enter only number in the Options");
@@ -67,14 +72,5 @@ internal class Program
         }
     }
     //Choice message
-    public static void ChooseChoice()
-    {
-        Console.WriteLine("What will you like to do\n");
-        Console.WriteLine("1.\t Add new song");
-        Console.WriteLine("2.\t Delete Song");
-        Console.WriteLine("3.\t Create Playlist");
-        Console.WriteLine("4.\t Play Song");
-        Console.WriteLine("5.\t Edit Song");
-    }
 
 }

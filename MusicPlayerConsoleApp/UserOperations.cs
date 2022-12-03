@@ -5,7 +5,7 @@
         private static int SongFrequency { get; set; } = 1000;
         private static int SongDuration { get; set; } = 200;
         private static int LoopSleepDuration { get; set; } = 500;
-        private static int Minutes { get; set;} = 60;
+        private static int OneMinute { get; set;} = 60;
 
         public static string CreatedDate { get; set; } = $"{DateTime.Now.ToLongDateString()} by {DateTime.Now.ToLongTimeString()}";
 
@@ -17,6 +17,8 @@
                 new SongModel(4, "Tekno", "Go", 2, CreatedDate),
                 new SongModel(5, "Jusin Bieber", "Love You Forever", 1.5, CreatedDate)
             };
+
+        public static int _songToPlay;
 
         public static void ErrorMessage()
         {
@@ -108,10 +110,11 @@
         /* ==================PlaySong===========================*/
         public static void PlaySong()
         {
-        Start: ViewListOfSongs();
+          Start: ViewListOfSongs();
             Console.WriteLine("Enter song number you want to play");
             if (int.TryParse(Console.ReadLine(), out int songToPlay))
             {
+                _songToPlay = songToPlay;
                 var song = Songs.FirstOrDefault(song => song.SongId == songToPlay);
                 if (song == null)
                 {
@@ -122,38 +125,40 @@
                 Console.Clear();
                 Console.WriteLine($"Playing {song.SongName} by {song.Artist}");
                 Console.Write($"Song Duration => {song.SongDuration} Minutes\n ");
-             for (int i = 0; i < song.SongDuration * Minutes; i++)
-                {
-                    Console.Write("|.|");
-                    Thread.Sleep(LoopSleepDuration);
-                    Console.Beep(SongFrequency, SongDuration);
-                }
-            playAnotherSong: Console.WriteLine("\nDo you wish to play another song [YES/NO]\n OR \n Enter [PREV/NEXT] to play the Previous/Next song");
-                string answer = Console.ReadLine() ?? string.Empty;
-                switch (answer.ToUpper())
-                {
-                    case "YES":
-                        Console.Clear();
-                        goto Start;
-                    case "PREV": PlayPrevSong(songToPlay);
-                        break;
-                    case "NEXT": PlayNextSong(songToPlay);
-                        break;
-                    case "NO":
-                        Console.Clear();
-                        Program.Main();
-                        break;
-                    default:
-                        Console.Clear();
-                        ErrorMessage();
-                        goto playAnotherSong;
-                }
+                ForLoop(song);
+               PlayNextOrPrevSong();
             }
             else
             {
                 Console.Clear();
                 ErrorMessage();
                 goto Start;
+            }
+        }
+         public static void PlayNextOrPrevSong()
+        {
+        playAnotherSong: Console.WriteLine("\nDo you wish to play another song [YES/NO]\n OR \n Enter [PREV/NEXT] to play the Previous/Next song");
+            string answer = Console.ReadLine() ?? string.Empty;
+            switch (answer.ToUpper())
+            {
+                case "YES":
+                    Console.Clear();
+                    PlaySong();
+                    break;
+                case "PREV":
+                    PlayPrevSong(_songToPlay);
+                    break;
+                case "NEXT":
+                    PlayNextSong(_songToPlay);
+                    break;
+                case "NO":
+                    Console.Clear();
+                    Program.Main();
+                    break;
+                default:
+                    Console.Clear();
+                    ErrorMessage();
+                    goto playAnotherSong;
             }
         }
     }
