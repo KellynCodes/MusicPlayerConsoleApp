@@ -30,7 +30,7 @@ internal class Program
                     break;
                 case (int)Choice.choiceTwo: UserOperations.RemoveSong();
                     break; 
-                case (int)Choice.choiceThree: UserOperations.ShowPlayListById();
+                case (int)Choice.choiceThree: UserOperations.EditSong();
                     break;
                 case (int)Choice.choiceFour: UserOperations.CreatePlayList();
                     break;
@@ -38,8 +38,8 @@ internal class Program
                     break;
                 case (int)Choice.choiceSix: UserOperations.AddSongToPlayList();
                     break;
-                    Console.Clear();
                     default: Console.WriteLine("Invalid input. Enter only number in the Options");
+                    Console.Clear();
                     goto EnterChoice;
             }
         }

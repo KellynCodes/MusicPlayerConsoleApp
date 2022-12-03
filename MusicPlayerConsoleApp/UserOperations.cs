@@ -84,7 +84,76 @@
                 if (userAnswer.ToUpper() == "YES")
                 {
                     Songs.Remove(findAndMatchSongById);
-                    Console.WriteLine($"Your have successfully removed {findAndMatchSongById}");
+                    Console.WriteLine($"Your have successfully removed {findAndMatchSongById.SongName}");
+                }
+                else if (userAnswer.ToUpper() == "NO")
+                {
+                    Console.Clear();
+                    Console.WriteLine($"{findAndMatchSongById.SongName} was not deleted");
+                    Program.Main();
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("You have cancled this Operation");
+                    Program.Main();
+                }
+            }
+            else
+            {
+                Console.Clear();
+                ErrorMessage();
+                goto Start; ;
+            }
+        }
+
+        public static void EditSong()
+        {
+            ViewListOfSongs();
+        Start: Console.WriteLine("Enter the number of songs you want to Edit");
+            if (int.TryParse(Console.ReadLine(), out int songId))
+            {
+                var findAndMatchSongById = Songs.FirstOrDefault(song => song.SongId == songId);
+                AreYouSure: Console.WriteLine($"Are you sure you want to Edit {findAndMatchSongById.SongName} by {findAndMatchSongById.Artist}");
+                string userAnswer = Console.ReadLine() ?? string.Empty;
+                if (string.IsNullOrWhiteSpace(userAnswer))
+                {
+                    Console.Clear();
+                    ErrorMessage();
+                    goto AreYouSure;
+                }
+                if (userAnswer.ToUpper() == "YES")
+                {
+                    EnterNewSongName: Console.WriteLine("Enter new song name");
+                    string songName = Console.ReadLine() ?? string.Empty;
+                    if (string.IsNullOrWhiteSpace(songName))
+                    {
+                        Console.Clear();
+                        ErrorMessage();
+                        goto EnterNewSongName;
+                    } 
+                EnterNewArtistName: Console.WriteLine("Enter artist name");
+                    string artistName = Console.ReadLine() ?? string.Empty;
+                    if (string.IsNullOrWhiteSpace(artistName))
+                    {
+                        Console.Clear();
+                        ErrorMessage();
+                        goto EnterNewArtistName;
+                    }
+                EnterNewSongDuration: Console.WriteLine("Enter new song Duration");
+                    if (double.TryParse(Console.ReadLine(), out double newSongDuration))
+                    {
+                        Songs.Remove(findAndMatchSongById);
+                        Songs.Add(new SongModel(findAndMatchSongById.SongId, artistName, songName, newSongDuration, CreatedDate));
+                        Console.WriteLine($"Your have successfully Edited {findAndMatchSongById.SongName}");
+                        ViewListOfSongs();
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        ErrorMessage();
+                        goto EnterNewSongDuration;
+                    }
                 }
                 else if (userAnswer.ToUpper() == "NO")
                 {
@@ -135,6 +204,9 @@
                 goto Start;
             }
         }
+
+
+
          public static void PlayNextOrPrevSong()
         {
         playAnotherSong: Console.WriteLine("\nDo you wish to play another song [YES/NO]\n OR \n Enter [PREV/NEXT] to play the Previous/Next song");

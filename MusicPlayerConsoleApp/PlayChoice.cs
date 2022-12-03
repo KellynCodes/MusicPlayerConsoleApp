@@ -91,7 +91,7 @@ namespace MusicPlayerConsoleApp
         public static void ShowPlayListById()
         {
             ShowPlayList();
-        EnterPlayList: Console.WriteLine("Enter Playlist Id in the list");
+        EnterPlayList: Console.WriteLine("Enter number of Playlist you want to use");
             string ListID = Console.ReadLine() ?? string.Empty;
             if (int.TryParse(ListID, out int PlayListID))
             {
@@ -217,7 +217,6 @@ namespace MusicPlayerConsoleApp
                         int NewSongId = SongList.Last().SongInPlayListId + 1;
                         SongList.Add(new SongInPlayList(NewSongId, songName, ArtistName, SongDuation, CreatedDate));
                         Console.WriteLine($"You have successfully Added your new song [{songName}] to {selectedPlayList.Name}");
-                        ShowPlayList();
                         Console.WriteLine("Enter song number to play");
                         ShowPlayListById();
                     }
@@ -235,8 +234,8 @@ namespace MusicPlayerConsoleApp
                     {
                         _songs = item.PlayListSongs;
                     }
-                        int NewSongId = _songs.Last().SongInPlayListId + 1;
-                        int NewPlayListId = PlayList.Last().PlayId + 1;
+                       const int NewSongId = 1;
+                      const int NewPlayListId = 1;
                     EnterPlayListName: Console.WriteLine("Enter Playlist name");
                         string playListName = Console.ReadLine() ?? string.Empty;
                         if (string.IsNullOrWhiteSpace(playListName))
