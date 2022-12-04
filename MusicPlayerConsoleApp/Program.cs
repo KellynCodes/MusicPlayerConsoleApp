@@ -12,7 +12,6 @@ internal class Program
     choiceFour,
     choiceFive,
     choiceSix,
-    choiceSeven,
 }
 
     public static void Main()
@@ -40,7 +39,6 @@ internal class Program
                 case (int)Choice.choiceFive: UserOperations.SongPlayController();
                     break;
                 case (int)Choice.choiceSix: UserOperations.AddSongToPlayList();
-                    break; case (int)Choice.choiceSeven: UserOperations.ShuffleSong();
                     break;
                     default: Console.WriteLine("Invalid input. Enter only number in the Options");
                     Console.Clear();
