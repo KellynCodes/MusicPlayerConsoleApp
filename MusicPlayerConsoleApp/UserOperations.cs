@@ -5,7 +5,7 @@
         private static int SongFrequency { get; set; } = 1000;
         private static int SongDuration { get; set; } = 200;
         private static int LoopSleepDuration { get; set; } = 500;
-        private static int OneMinute { get; set;} = 60;
+        private static int OneMinute { get; set; } = 60;
 
         public static string CreatedDate { get; set; } = $"{DateTime.Now.ToLongDateString()} by {DateTime.Now.ToLongTimeString()}";
 
@@ -114,7 +114,7 @@
             if (int.TryParse(Console.ReadLine(), out int songId))
             {
                 var findAndMatchSongById = Songs.FirstOrDefault(song => song.SongId == songId);
-                AreYouSure: Console.WriteLine($"Are you sure you want to Edit {findAndMatchSongById.SongName} by {findAndMatchSongById.Artist}");
+            AreYouSure: Console.WriteLine($"Are you sure you want to Edit {findAndMatchSongById.SongName} by {findAndMatchSongById.Artist}");
                 string userAnswer = Console.ReadLine() ?? string.Empty;
                 if (string.IsNullOrWhiteSpace(userAnswer))
                 {
@@ -124,14 +124,14 @@
                 }
                 if (userAnswer.ToUpper() == "YES")
                 {
-                    EnterNewSongName: Console.WriteLine("Enter new song name");
+                EnterNewSongName: Console.WriteLine("Enter new song name");
                     string songName = Console.ReadLine() ?? string.Empty;
                     if (string.IsNullOrWhiteSpace(songName))
                     {
                         Console.Clear();
                         ErrorMessage();
                         goto EnterNewSongName;
-                    } 
+                    }
                 EnterNewArtistName: Console.WriteLine("Enter artist name");
                     string artistName = Console.ReadLine() ?? string.Empty;
                     if (string.IsNullOrWhiteSpace(artistName))
@@ -177,9 +177,42 @@
         }
 
         /* ==================PlaySong===========================*/
+        public static void SongPlayController()
+        {
+        start: Console.WriteLine("Enter list number to choose from the list");
+            Console.WriteLine("1. Play Song by PREV and NEXT");
+            Console.WriteLine("2. Play song serially");
+            Console.WriteLine("3. Shuffle Songs");
+            Console.WriteLine("4. Play song in Play list");
+            if (int.TryParse(Console.ReadLine(), out int answer))
+            {
+                switch (answer)
+                {
+                    case (int)PlayChoice.Song.IdOne:
+                        PlaySong();
+                        break;
+                    case (int)PlayChoice.Song.IdTwo:
+                        PlaySongSerially();
+                        break;
+                    case (int)PlayChoice.Song.IdThree:
+                        ShuffleSong();
+                        break;
+                    case (int)PlayChoice.Song.IdFour:
+                        ShowPlayListById();
+                        break;
+                }
+            }
+            else
+            {
+                Console.Clear();
+                ErrorMessage();
+                goto start;
+            }
+
+        }
         public static void PlaySong()
         {
-          Start: ViewListOfSongs();
+        Start: ViewListOfSongs();
             Console.WriteLine("Enter song number you want to play");
             if (int.TryParse(Console.ReadLine(), out int songToPlay))
             {
@@ -195,7 +228,7 @@
                 Console.WriteLine($"Playing {song.SongName} by {song.Artist}");
                 Console.Write($"Song Duration => {song.SongDuration} Minutes\n ");
                 ForLoop(song);
-               PlayNextOrPrevSong();
+                PlayNextOrPrevSong();
             }
             else
             {
@@ -205,9 +238,44 @@
             }
         }
 
+        public static void PlaySongSerially()
+        {
+            const int TimeOut = 2500;
+            ViewListOfSongs();
+            Console.WriteLine("Shuffle is on");
+            foreach (var ShuffledSong in Songs)
+            {
+                Console.WriteLine("Playing");
+                Console.WriteLine($"{ShuffledSong.SongName} by {ShuffledSong.Artist}");
+                Thread.Sleep(TimeOut);
+            }
+        }
+
+        public static void ShuffleSong()
+        {
+            const int TimeOut = 2500;
+            ViewListOfSongs();
+            Console.WriteLine("Shuffle is on");
+                Console.WriteLine("Playing");
+                int randomSongId = Songs.Last().SongId - (int)PlayChoice.Song.IdOne;
+                var randomSong = Songs.FirstOrDefault(songID => songID.SongId == randomSongId);
+                Console.WriteLine($"{randomSong?.SongName} by {randomSong?.Artist}");
+                Thread.Sleep(TimeOut);
+                Console.Clear();  Console.WriteLine("Playing");
+                int randomSongIdNext = Songs.Last().SongId - (int)PlayChoice.Song.IdTwo;
+                var randomSongNext = Songs.FirstOrDefault(songID => songID.SongId == randomSongIdNext);
+                Console.WriteLine($"{randomSongNext?.SongName} by {randomSongNext?.Artist}");
+                Thread.Sleep(TimeOut);
+                Console.Clear(); Console.Clear();  Console.WriteLine("Playing");
+                int randomSongIdNext1 = Songs.Last().SongId - (int)PlayChoice.Song.IdThree;
+                var randomSongNext1 = Songs.FirstOrDefault(songID => songID.SongId == randomSongIdNext1);
+                Console.WriteLine($"{randomSongNext1?.SongName} by {randomSongNext1?.Artist}");
+                Thread.Sleep(TimeOut);
+                Console.Clear();
+        }
 
 
-         public static void PlayNextOrPrevSong()
+        public static void PlayNextOrPrevSong()
         {
         playAnotherSong: Console.WriteLine("\nDo you wish to play another song [YES/NO]\n OR \n Enter [PREV/NEXT] to play the Previous/Next song");
             string answer = Console.ReadLine() ?? string.Empty;
