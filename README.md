@@ -1,5 +1,6 @@
 # MusicPlayerConsoleApp
-<img src="https://images.techhive.com/images/article/2017/03/google-play-music-100713684-large.jpg" />
+<img src="https://images.techhive.com/images/article/2017/03/google-play-music-100713684-large.jpg" /> <br />
+
 * [x] App Features
   * [] Create song playlist.
   * [] Add song to playlist.
