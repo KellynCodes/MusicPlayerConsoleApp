@@ -1,11 +1,15 @@
-﻿namespace MusicPlayerConsoleApp
+﻿using System.Threading;
+
+namespace MusicPlayerConsoleApp
 {
-    public partial class UserOperations
+    public static partial class UserOperations
     {
         private static int SongFrequency { get; set; } = 1000;
         private static int SongDuration { get; set; } = 200;
         private static int LoopSleepDuration { get; set; } = 500;
         private static int OneMinute { get; set; } = 60;
+        private static int _timeOut = 3500;
+        private static readonly Random RandomNumbers = new();
 
         public static string CreatedDate { get; set; } = $"{DateTime.Now.ToLongDateString()} by {DateTime.Now.ToLongTimeString()}";
 
@@ -240,38 +244,54 @@
 
         public static void PlaySongSerially()
         {
-            const int TimeOut = 2500;
             ViewListOfSongs();
             Console.WriteLine("Shuffle is on");
-            foreach (var ShuffledSong in Songs)
+            int Count = 0;
+            ViewListOfSongs();
+            Console.WriteLine("Shuffle is on");
+            for (var song = 0; song < Songs.Count; song++)
             {
-                Console.WriteLine("Playing");
-                Console.WriteLine($"{ShuffledSong.SongName} by {ShuffledSong.Artist}");
-                Thread.Sleep(TimeOut);
+                try
+                {
+                    Console.WriteLine($"\nPlaying {Songs[Count].SongName} by {Songs[Count].Artist} \n Song Duration => {Songs[Count].SongDuration} Minutes");
+                    for (int i = 0; i < Songs[Count].SongDuration * OneMinute; i++)
+                    {
+                        Console.Write("|.|");
+                        Thread.Sleep(LoopSleepDuration);
+                        Console.Beep(SongFrequency, SongDuration);
+                    }
+                    Thread.Sleep(_timeOut);
+                    Count++;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("The songs has finished");
+                    PlayNextOrPrevSong();
+                }
+
             }
         }
 
         public static void ShuffleSong()
         {
-            const int TimeOut = 2500;
-            ViewListOfSongs();
-            Console.WriteLine("Shuffle is on");
-                Console.WriteLine("Playing");
-                int randomSongId = Songs.Last().SongId - (int)PlayChoice.Song.IdOne;
-                var randomSong = Songs.FirstOrDefault(songID => songID.SongId == randomSongId);
-                Console.WriteLine($"{randomSong?.SongName} by {randomSong?.Artist}");
-                Thread.Sleep(TimeOut);
-                Console.Clear();  Console.WriteLine("Playing");
-                int randomSongIdNext = Songs.Last().SongId - (int)PlayChoice.Song.IdTwo;
-                var randomSongNext = Songs.FirstOrDefault(songID => songID.SongId == randomSongIdNext);
-                Console.WriteLine($"{randomSongNext?.SongName} by {randomSongNext?.Artist}");
-                Thread.Sleep(TimeOut);
-                Console.Clear(); Console.Clear();  Console.WriteLine("Playing");
-                int randomSongIdNext1 = Songs.Last().SongId - (int)PlayChoice.Song.IdThree;
-                var randomSongNext1 = Songs.FirstOrDefault(songID => songID.SongId == randomSongIdNext1);
-                Console.WriteLine($"{randomSongNext1?.SongName} by {randomSongNext1?.Artist}");
-                Thread.Sleep(TimeOut);
-                Console.Clear();
+            const int One = 0;
+            var list = Songs;
+            int NumberOfItemsInList = list.Count;
+            while (NumberOfItemsInList > One)
+            {
+                NumberOfItemsInList--;
+                int NextRandomNumbers = RandomNumbers.Next(NumberOfItemsInList + One);
+               var ListResult = (list[NumberOfItemsInList], list[NumberOfItemsInList]) = (list[NextRandomNumbers], list[NextRandomNumbers]);
+                Console.WriteLine($"\nPlaying {ListResult.Item1.SongName} by {ListResult.Item1.Artist} \n Song Duration => {ListResult.Item1.SongDuration} Minutes");
+                for (int i = 0; i < ListResult.Item1.SongDuration * OneMinute; i++)
+                {
+                    Console.Write("|.|");
+                    Thread.Sleep(LoopSleepDuration);
+                    Console.Beep(SongFrequency, SongDuration);
+                }
+                Thread.Sleep(_timeOut);
+            }
         }
 
 
